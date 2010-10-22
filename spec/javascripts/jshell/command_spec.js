@@ -22,6 +22,19 @@ describe("JShell.Command", function() {
     expect(ret.stdin).toEqual(shell.stdin);
   });
 
+  describe("JShell.Command.List", function() {
+    it("#all should return all defined commands sorted by name", function() {
+      new JShell.Command("foo", function() { });
+      new JShell.Command("bar", function() { });
+
+      var list = JShell.Command.List.all();
+      expect(list).toContain("foo");
+      expect(list).toContain("bar");
+
+      expect(list.indexOf("bar")).toBeLessThan(list.indexOf("foo"));
+    });
+  });
+
   afterEach(function() {
     JShell.Command.List.clear();
   });
