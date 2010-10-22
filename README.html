@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html;charset=UTF-8" http-equiv="Content-Type"/>
+    <title>JShell show-case</title>
+
+    <script src="build/jshell-src.js" type="text/javascript"></script>
+    <script src="extra/jquery-1.4.3.min.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div id="terminal">
+    </div>
+
+    <script type="text/javascript">
+      var shell = new JShell();
+
+      shell.newLine = function() {
+        jQuery(":input.active").removeClass("active").attr("disabled", true);
+
+        var line = jQuery('<div class="line">')
+          .append('<span class="prompt"> &gt; </span>')
+          .append('<input type="text" class="readLine active">');
+
+        jQuery("#terminal").append(line);
+
+        line.find(":input").focus();
+      };
+
+      shell.invoke = function(line) {
+        shell.stdout.write = function(message) {
+          line.append(jQuery("<pre>").html(message));
+        };
+
+        shell.execute(line.find(":input").attr('value'));
+
+        shell.newLine();
+      };
+
+      var clear = new JShell.Command("clear", function() {
+        jQuery("#terminal div.line").remove();
+      });
+
+      jQuery("#terminal").delegate(":input.readLine.active", 'keyup', function(event) {
+        if (event.keyCode === 13) {
+          // enter was pressed, submitting
+          shell.invoke(jQuery(this).parent("div.line"));
+        }
+      });
+
+      jQuery(function() {
+        shell.newLine();
+      });
+    </script>
+  </body>
+</html>
