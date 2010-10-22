@@ -6,9 +6,74 @@
 
     <script src="/jshell-min.js" type="text/javascript"></script>
     <script src="/jquery-1.4.3.min.js" type="text/javascript"></script>
+
+    <style>
+      #shell {
+        width: 1000px;
+        margin: auto;
+      }
+
+      #terminal {
+        margin: 1em 0 0;
+        padding: .25em 0;
+        height: 400px;
+        background: #1f140d;
+      }
+
+      #terminal div {
+        padding-bottom: 15px;
+      }
+
+      #terminal div.line {
+        margin-bottom: 5px;
+        padding: 0;
+      }
+
+      #terminal input.readLine {
+        border-bottom: 4px solid #1f140d;
+        font-size: 100%;
+      }
+
+      #terminal input {
+        width: 880px;
+        margin: 1px 0 1px 10px;
+        border: none;
+        display: inline;
+        padding: 2px;
+        background: #1f140d;
+        color: #55d839;
+        font-size: 100%;
+        font-family: Monaco, monospace;
+      }
+
+      #terminal p, #terminal pre {
+        margin: 2px;
+        padding: 0 8px;
+        color: #55d839;
+        font-size: 85%;
+        font-family: Monaco, monospace;
+        color: #55d839 !important;
+      }
+
+      #terminal a {
+        color:  #55d839;
+      }
+
+      #terminal span.prompt {
+        color: #55d839;
+        font-size: 93%;
+        margin-left: 12px;
+}
+</style>
+
   </head>
   <body>
-    <div id="terminal">
+    <div id="shell">
+      <h1>Demo console:</h1>
+      <div id="terminal">
+      </div>
+
+      <p>The code is available on <a href="http://github.com/ratnikov/jshell">github</a>.</p>
     </div>
 
     <script type="text/javascript">
