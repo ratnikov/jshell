@@ -23,7 +23,20 @@ describe("JShell.Stream", function() {
       stream.write("Hello");
       stream.write("World");
 
-      expect(stream.read()).toEqual("World");
+      expect(stream.read()).toEqual("Hello");
+    });
+  });
+
+  describe("#readAll", function() {
+    it("should return an array of read lines", function() {
+      stream.write("Hello");
+      stream.write("World");
+
+      expect(stream.readAll()).toEqual([ "Hello", "World" ]);
+    })
+
+    it("should return empty array if nothing is available", function() {
+      expect(stream.readAll()).toEqual([ ]);
     });
   });
 });
