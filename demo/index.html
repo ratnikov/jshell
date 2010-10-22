@@ -36,6 +36,11 @@
         shell.newLine();
       };
 
+      shell.noCommandFound = function(name) {
+        this.stdout.write("Command not found: " + name +". Type 'cmdlist' for list of commands.");
+      };
+        
+
       var clear = new JShell.Command("clear", function() {
         jQuery("#terminal div.line").remove();
       });
