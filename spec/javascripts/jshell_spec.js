@@ -32,12 +32,18 @@ describe("JShell", function() {
       expect(ret.stderr).toEqual(shell.stderr);
     });
 
-    it("should invoke noCommandFound if no command is located", function() {
-      spyOn(shell, 'noCommandFound');
-
+    it("should print error message to stdout on unknown command", function() {
       shell.execute("invoke unknown command");
 
-      expect(shell.noCommandFound).toHaveBeenCalledWith("invoke unknown command");
-   });
+      expect(shell.stdout.read()).toEqual("Command not found: invoke unknown command");
+    });
+
+    it("should allow overriding behavior when command is not found by overriding noCommandFound", function() {
+      shell.noCommandFound = function(name) {
+        expect(name).toEqual("unknown command");
+      };
+
+      shell.execute("unknown command");
+    });
   });
 });
