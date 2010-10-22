@@ -8,8 +8,6 @@ require 'packr'
 class Application
   def initialize(root)
     @file_server = Rack::File.new(root)
-
-    rebuild_jshell
   end
 
   def call(env)
@@ -17,16 +15,16 @@ class Application
 
     case path
     when '/' then @file_server.call(env.merge('PATH_INFO' => '/index.html'))
+    when /jshell.*\.js/ then [ 200, { 'Content-Type' => 'text/javascript' }, [ jshell_code ] ]
     else
       @file_server.call env
     end
   end
 
-  def rebuild_jshell
-    code = ([ "lib/jshell.js", "lib/jshell/command.js" ] + Dir["lib/**/*.js"]).uniq!.map { |file| File.read file }.join("\n")
+  def jshell_code
+    @jshell_code ||= ([ "lib/jshell.js", "lib/jshell/command.js" ] + Dir["lib/**/*.js"]).uniq!.map { |file| File.read file }.join("\n")
 
-    File.open("demo/jshell-src.js", 'w') { |file| file.puts code }
-    File.open("demo/jshell-min.js", 'w') { |file| file.puts Packr.pack(code) }
+    @jshell_code
   end
 end
 
