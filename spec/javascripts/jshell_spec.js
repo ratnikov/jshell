@@ -9,16 +9,9 @@ describe("JShell", function() {
     var command;
     beforeEach(function() {
       
-      command = function(args, stdin, stdout, stderr) {
-        return {
-          args: args,
-          stdin: stdin,
-          stdout: stdout,
-          stderr: stderr
-        };
-      };
-
-      shell.addCommand('test', command);
+      var testCommand = new JShell.Command('test', function() {
+        return this;
+      });
     });
 
     it("should support commands without arguments", function() {
