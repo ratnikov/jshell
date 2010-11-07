@@ -17,6 +17,12 @@ describe("JShell.Command.Echo", function() {
     expect(shell.stdout.read()).toBeNull();
   });
 
+  it("should not be a zombie", function() {
+    shell.execute("echo hello world");
+
+    expect(shell.jobs()).toEqual([ null ]);
+  });
+
   it("should support help message", function() {
     shell.execute("echo -h");
 

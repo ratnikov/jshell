@@ -1,5 +1,6 @@
 describe("JShell.Command.Cmdlist", function() {
   var shell;
+
   beforeEach(function() { 
     shell = new JShell();
   });
@@ -14,5 +15,11 @@ describe("JShell.Command.Cmdlist", function() {
 
     expect(lines).toContain("foo");
     expect(lines).toContain("bar");
+  });
+
+  it("should not remain a zombie after", function() {
+    shell.execute("cmdlist");
+
+    expect(shell.jobs()).toEqual([ null ]);
   });
 });
