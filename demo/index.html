@@ -77,6 +77,26 @@
     </div>
 
     <script type="text/javascript">
+      var asyncCommand = new JShell.Command("async", function() {
+	var self = this;
+	self.stdout.write("Scheduling to be done in 5 seconds...");
+
+	this.done(function(){
+	  self.stdout.write("Done!");
+	});
+
+	var i = 5;
+	var intervalId = setInterval(function() {
+	  if (i > 0) {
+	    self.stdout.write("" + i + " ...");
+	    i--;
+	  } else {
+	    clearInterval(intervalId);
+	    self.done();
+	  }
+	}, 1000);
+      });
+
       jQuery(function() {
         var ui = new JShell.TerminalUI("#terminal");
       });

@@ -22,24 +22,44 @@ describe("JShell.Command", function() {
     expect(ret.stdin).toEqual(shell.stdin);
   });
 
-  it("should support done event subscribing", function() {
-    var invoked = false;
-    var command = new JShell.Command("test", function() {
-      this.wasScheduled = true;
-
-      this.done(function() {
-	invoked = true;
+  describe("'done' event", function() {
+    beforeEach(function() {
+      var command = new JShell.Command("test", function() {
+	this.wasScheduled = true;
       });
     });
 
-    var job = shell.execute("test");
+    it("should allow subscribing", function() {
+      var job = shell.execute("test");
 
-    expect(job.wasScheduled).toEqual(true);
-    expect(invoked).toEqual(false);
+      var invoked = false;
+      expect(job.wasScheduled).toEqual(true);
 
-    job.done();
+      job.done(function() {
+	invoked = true;
+      });
 
-    expect(invoked).toEqual(true);
+      // should not be executed yet
+      expect(invoked).toEqual(false);
+
+      job.done();
+
+      expect(invoked).toEqual(true);
+    });
+
+    it("should immediately execute 'done' callback if already done", function() {
+      var job = shell.execute("test");
+
+      job.done();
+
+      var callbackExecuted = false;
+
+      job.done(function() {
+	callbackExecuted = true;
+      });
+
+      expect(callbackExecuted).toEqual(true);
+    });
   });
 
   describe("JShell.Command.List", function() {
