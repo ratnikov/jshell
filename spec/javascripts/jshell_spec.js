@@ -10,27 +10,34 @@ describe("JShell", function() {
     beforeEach(function() {
       
       var testCommand = new JShell.Command('test', function() {
-        return this;
+	this.wasScheduled = true;
       });
     });
 
     it("should support commands without arguments", function() {
-      var ret = shell.execute("test");
+      var job = shell.execute("test");
 
-      expect(ret.args).toEqual([ "test" ]);
+      expect(job.args).toEqual([ "test" ]);
+
+      expect(shell.jobs()).toEqual([ job ]);
+      expect(job.wasScheduled).toEqual(true);
+
+      job.done();
+
+      expect(shell.jobs()).toNotContain(job);
     });
 
     it("should invoke existing command with args and streams", function() {
 
-      var ret = shell.execute("test foo bar");
+      var job = shell.execute("test foo bar");
 
-      expect(ret).toBeDefined();
+      expect(job).toBeDefined();
 
-      expect(ret.args).toEqual([ "test", "foo", "bar" ]);
-      expect(ret.shell).toEqual(shell);
-      expect(ret.stdin).toEqual(shell.stdin);
-      expect(ret.stdout).toEqual(shell.stdout);
-      expect(ret.stderr).toEqual(shell.stderr);
+      expect(job.args).toEqual([ "test", "foo", "bar" ]);
+      expect(job.shell).toEqual(shell);
+      expect(job.stdin).toEqual(shell.stdin);
+      expect(job.stdout).toEqual(shell.stdout);
+      expect(job.stderr).toEqual(shell.stderr);
     });
 
     it("should print error message to stdout on unknown command", function() {
