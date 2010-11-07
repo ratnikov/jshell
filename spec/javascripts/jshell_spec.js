@@ -27,6 +27,7 @@ describe("JShell", function() {
       expect(ret).toBeDefined();
 
       expect(ret.args).toEqual([ "test", "foo", "bar" ]);
+      expect(ret.shell).toEqual(shell);
       expect(ret.stdin).toEqual(shell.stdin);
       expect(ret.stdout).toEqual(shell.stdout);
       expect(ret.stderr).toEqual(shell.stderr);
