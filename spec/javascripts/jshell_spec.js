@@ -36,7 +36,7 @@ describe("JShell", function() {
     it("should print error message to stdout on unknown command", function() {
       shell.execute("invoke unknown command");
 
-      expect(shell.stdout.read()).toEqual("Command not found: invoke unknown command");
+      expect(shell.stderr.read()).toEqual("Command not found: invoke unknown command");
     });
 
     it("should allow overriding behavior when command is not found by overriding noCommandFound", function() {
