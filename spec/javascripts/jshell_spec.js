@@ -47,4 +47,26 @@ describe("JShell", function() {
       shell.execute("unknown command");
     });
   });
+
+  describe("inherited", function() {
+
+    it("should return an object linked up to the base", function() {
+      var extension = function() {
+	this.instanceKey = 'instance-value';
+      };
+
+      extension.prototype = JShell.inherited({
+	foo : 'bar'
+      });
+
+      var instance = new extension();
+
+      expect(instance.instanceKey).toEqual('instance-value');
+      expect(instance.foo).toEqual('bar');
+
+      expect(instance.execute).toBeDefined();
+
+      expect(instance.stdin).toBeUndefined();
+    });
+  });
 });
