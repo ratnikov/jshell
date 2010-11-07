@@ -22,6 +22,26 @@ describe("JShell.Command", function() {
     expect(ret.stdin).toEqual(shell.stdin);
   });
 
+  it("should support done event subscribing", function() {
+    var invoked = false;
+    var command = new JShell.Command("test", function() {
+      this.wasScheduled = true;
+
+      this.done(function() {
+	invoked = true;
+      });
+    });
+
+    var job = shell.execute("test");
+
+    expect(job.wasScheduled).toEqual(true);
+    expect(invoked).toEqual(false);
+
+    job.done();
+
+    expect(invoked).toEqual(true);
+  });
+
   describe("JShell.Command.List", function() {
     it("#all should return all defined commands sorted by name", function() {
       new JShell.Command("foo", function() { });
